@@ -1,40 +1,63 @@
-﻿using System.Web.Mvc;
-using demo.Models;
-using demo.Repositories;
+﻿using demo.Models;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
-namespace demo.Controllers
+public class WarrantyController : Controller
 {
-    public class WarrantyController : Controller
+    AnPhatDbContext db = new AnPhatDbContext();
+
+    public ActionResult Index()
     {
-        private readonly WarrantyRepository _repository;
+        return View(db.WarrantyTickets.ToList());
+    }
 
-        public WarrantyController()
-        {
-            _repository = new WarrantyRepository();
-        }
+    public ActionResult Create()
+    {
+        return View();
+    }
 
-        // GET: Hiển thị thanh tìm kiếm ban đầu
-        [HttpGet]
-        public ActionResult Index()
+    [HttpPost]
+    public ActionResult Create(string serial, string issue)
+    {
+        var item = db.ProductItems.FirstOrDefault(x => x.serial_number == serial);
+
+        if (item == null)
         {
+            ViewBag.Error = "Không tìm thấy sản phẩm";
             return View();
         }
 
-        // POST: Khi người dùng bấm nút "Tra cứu"
-        [HttpPost]
-        public ActionResult Index(string searchedSerial)
+        var ticket = new WarrantyTicket()
         {
-            if (string.IsNullOrEmpty(searchedSerial))
-            {
-                TempData["Error"] = "Vui lòng nhập mã Serial cần tra cứu!";
-                return View();
-            }
+            warranty_code = "BH" + DateTime.Now.Ticks,
+            product_item_id = item.product_item_id,
+            issue_description = issue,
+            status = "Pending",
+            received_date = DateTime.Now,
+            created_by = 1
+        };
 
-            // Gọi Repository để tìm kiếm
-            WarrantyViewModel model = _repository.CheckWarranty(searchedSerial);
+        item.status = "Warranty";
 
-            // Trả kết quả về lại cho View hiển thị
-            return View(model);
-        }
+        db.WarrantyTickets.Add(ticket);
+        db.SaveChanges();
+
+        return RedirectToAction("Index");
+    }
+
+    public ActionResult UpdateStatus(int id)
+    {
+        var ticket = db.WarrantyTickets.Find(id);
+
+        ticket.status = "Completed";
+        ticket.completed_date = DateTime.Now;
+
+        var item = db.ProductItems.Find(ticket.product_item_id);
+        item.status = "InStock";
+
+        db.SaveChanges();
+
+        return RedirectToAction("Index");
     }
 }
