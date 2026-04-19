@@ -1,0 +1,60 @@
+﻿@model demo.Models.WarrantyViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Tra cứu bảo hành</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+    <h2 class="text-info">Hệ thống tra cứu bảo hành</h2>
+    <hr />
+
+    <div class="row mb-4">
+        <div class="col-md-6">
+            @using (Html.BeginForm("Index", "Warranty", FormMethod.Post, new { @class = "form-inline" }))
+            {
+                <input type="text" name="searchedSerial" class="form-control mr-2" placeholder="Nhập mã Serial..." style="width: 300px;" value="@(Model != null ? Model.SerialNumber : "")" />
+                <button type="submit" class="btn btn-info">Tra cứu</button>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <small class="text-danger mt-2 d-block">@TempData["Error"]</small>
+            }
+        </div>
+    </div>
+
+    @if (Model != null)
+    {
+        if (Model.IsFound)
+        {
+            <div class="card border-info" style="max-width: 500px;">
+                <div class="card-header bg-info text-white font-weight-bold">
+                    Kết quả tra cứu: @Model.SerialNumber
+                </div>
+                <div class="card-body">
+                    <p><strong>Sản phẩm:</strong> @Model.ProductName</p>
+                    <p><strong>Ngày mua (Nhập kho):</strong> @Model.ImportDate.ToString("dd/MM/yyyy")</p>
+                    <p><strong>Ngày hết hạn:</strong> @Model.ExpirationDate.ToString("dd/MM/yyyy")</p>
+
+                    @if (Model.Status == "Còn bảo hành")
+                    {
+                        <h4 class="text-success font-weight-bold">✔ @Model.Status</h4>
+                    }
+                    else
+                    {
+                        <h4 class="text-danger font-weight-bold">✖ @Model.Status</h4>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning" style="max-width: 500px;">
+                Không tìm thấy thông tin bảo hành cho mã Serial: <strong>@Model.SerialNumber</strong>. Vui lòng kiểm tra lại!
+            </div>
+        }
+    }
+</body>
+</html>
