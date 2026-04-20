@@ -1,0 +1,441 @@
+﻿@model demo.Models.POSViewModel
+@{
+    ViewBag.Title = "In hóa đơn bán hàng";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Hóa đơn bán hàng</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f4f8;
+            padding: 20px;
+        }
+
+        .invoice-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 50px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Header */
+        .company-header {
+            text-align: center;
+            border-bottom: 3px solid #0d47a1;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .company-name {
+            font-size: 28px;
+            font-weight: 700;
+            color: #0d47a1;
+            margin-bottom: 5px;
+        }
+
+        .company-tagline {
+            font-size: 13px;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .invoice-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0d47a1;
+            text-transform: uppercase;
+            margin-top: 15px;
+        }
+
+        /* Invoice info row */
+        .invoice-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .invoice-info-left, .invoice-info-right {
+            flex: 1;
+        }
+
+        .invoice-info-right {
+            text-align: right;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        /* Table */
+        .invoice-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .invoice-table thead {
+            background-color: #0d47a1;
+            color: white;
+        }
+
+        .invoice-table th {
+            padding: 12px 8px;
+            text-align: left;
+            font-weight: 600;
+            border: 1px solid #ddd;
+        }
+
+        .invoice-table td {
+            padding: 12px 8px;
+            border: 1px solid #ddd;
+        }
+
+        .invoice-table tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        .invoice-table tbody tr:hover {
+            background-color: #f0f5ff;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Totals section */
+        .totals-section {
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .totals-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 8px;
+            padding-right: 20px;
+        }
+
+        .totals-label {
+            font-weight: 600;
+            width: 200px;
+            text-align: right;
+            padding-right: 15px;
+            color: #333;
+        }
+
+        .totals-value {
+            width: 150px;
+            text-align: right;
+            color: #666;
+        }
+
+        .final-total-row {
+            border-top: 2px solid #0d47a1;
+            border-bottom: 2px solid #0d47a1;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .final-total-row .totals-label {
+            font-size: 16px;
+            font-weight: 700;
+            color: #0d47a1;
+        }
+
+        .final-total-row .totals-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0d47a1;
+        }
+
+        .discount-highlight {
+            color: #d32f2f;
+        }
+
+        /* Notes */
+        .notes-section {
+            background-color: #fafafa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            font-size: 13px;
+            border-left: 4px solid #0d47a1;
+        }
+
+        .notes-section strong {
+            color: #333;
+        }
+
+        /* Signature section */
+        .signature-section {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 13px;
+        }
+
+        .signature-box {
+            text-align: center;
+            flex: 1;
+        }
+
+        .signature-box p {
+            margin-bottom: 40px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .signature-box .signature-line {
+            border-top: 1px solid #333;
+            margin-top: 10px;
+            padding-top: 5px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        /* Print buttons */
+        .print-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        .print-actions .btn {
+            padding: 10px 25px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 5px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-print {
+            background-color: #0d47a1;
+            color: white;
+        }
+
+        .btn-print:hover {
+            background-color: #0a3a7a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(13, 71, 161, 0.3);
+        }
+
+        .btn-cancel {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        .btn-cancel:hover {
+            background-color: #d0d0d0;
+        }
+
+        .btn-new {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .btn-new:hover {
+            background-color: #45a049;
+        }
+
+        /* Empty message */
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+            font-size: 16px;
+        }
+
+        /* Print styles */
+        @@media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .invoice-container {
+                box-shadow: none;
+                padding: 0;
+                max-width: 100%;
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .print-actions {
+                display: none !important;
+            }
+
+            .invoice-table tbody tr:hover {
+                background-color: #f9fafb;
+            }
+        }
+
+        /* Badge styles */
+        .badge-category {
+            display: inline-block;
+            background-color: #e3f2fd;
+            color: #0d47a1;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="invoice-container">
+        @if (Model == null || Model.CartItems == null || !Model.CartItems.Any())
+        {
+            <div class="empty-message">
+                <i class="fas fa-shopping-cart" style="font-size: 48px; color: #ccc; margin-bottom: 20px; display: block;"></i>
+                <p>Không có dữ liệu để in hóa đơn</p>
+            </div>
+        }
+        else
+        {
+            <!-- Company Header -->
+            <div class="company-header">
+                <div class="company-name">
+                    <i class="fas fa-microchip"></i> AN PHÁT COMPUTER
+                </div>
+                <div class="company-tagline">Chuyên cung cấp linh kiện máy tính chính hãng & Build PC</div>
+                <div class="invoice-title">HÓA ĐƠN BÁN HÀNG</div>
+            </div>
+
+            <!-- Invoice Info -->
+            <div class="invoice-info">
+                <div class="invoice-info-left">
+                    <div class="info-label">Ngày lập hóa đơn:</div>
+                    <div class="info-value">@DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss")</div>
+                </div>
+                <div class="invoice-info-right">
+                    <div class="info-label">Hình thức thanh toán:</div>
+                    <div class="info-value">Tiền mặt</div>
+                </div>
+            </div>
+
+            <!-- Line Items Table -->
+            <table class="invoice-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">STT</th>
+                        <th style="width: 20%;">Loại</th>
+                        <th style="width: 40%;">Tên linh kiện</th>
+                        <th style="width: 15%;" class="text-right">Đơn giá</th>
+                        <th style="width: 10%;" class="text-center">SL</th>
+                        <th style="width: 10%;" class="text-right">Thành tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        int stt = 1;
+                    }
+                    @foreach (var item in Model.CartItems)
+                    {
+                        <tr>
+                            <td class="text-center">@(stt++)</td>
+                            <td><span class="badge-category">@item.Category</span></td>
+                            <td>@item.ProductName</td>
+                            <td class="text-right">@item.UnitPrice.ToString("N0") đ</td>
+                            <td class="text-center">@item.Quantity</td>
+                            <td class="text-right"><strong>@item.TotalPrice.ToString("N0") đ</strong></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <!-- Totals Section -->
+            <div class="totals-section">
+                <div class="totals-row">
+                    <div class="totals-label">Tạm tính:</div>
+                    <div class="totals-value">@Model.SubTotal.ToString("N0") đ</div>
+                </div>
+
+                @if (Model.Discount > 0)
+                {
+                    <div class="totals-row">
+                        <div class="totals-label">
+                            Chiết khấu Combo
+                            <br>
+                            <span style="font-size: 12px; color: #999;">(@Model.CartItems.Count món → giảm 5%)</span>
+                        </div>
+                        <div class="totals-value discount-highlight">- @Model.Discount.ToString("N0") đ</div>
+                    </div>
+                }
+
+                <div class="totals-row final-total-row">
+                    <div class="totals-label">TỔNG CỘNG:</div>
+                    <div class="totals-value">@Model.FinalTotal.ToString("N0") đ</div>
+                </div>
+            </div>
+
+            <!-- Notes (if any) -->
+            <div class="notes-section">
+                <strong>Ghi chú:</strong> Cảm ơn quý khách đã ủng hộ An Phát Computer. 
+                Bảo hành sản phẩm theo chính sách của từng hãng sản xuất.
+            </div>
+
+            <!-- Signature Section -->
+            <div class="signature-section">
+                <div class="signature-box">
+                    <p>Người mua hàng</p>
+                    <div class="signature-line">(Ký, ghi rõ họ tên)</div>
+                </div>
+                <div class="signature-box">
+                    <p>Nhân viên bán hàng</p>
+                    <div class="signature-line">(Ký, ghi rõ họ tên)</div>
+                </div>
+                <div class="signature-box">
+                    <p>Chủ cửa hàng</p>
+                    <div class="signature-line">(Ký, đóng dấu)</div>
+                </div>
+            </div>
+
+            <!-- Print Actions -->
+            <div class="print-actions">
+                <button class="btn btn-print" onclick="window.print()">
+                    <i class="fas fa-print"></i> In hóa đơn
+                </button>
+                <button class="btn btn-new" onclick="location.reload()">
+                    <i class="fas fa-plus"></i> Lập hóa đơn mới
+                </button>
+                <button class="btn btn-cancel" onclick="window.history.back()">
+                    <i class="fas fa-times"></i> Hủy
+                </button>
+            </div>
+        }
+    </div>
+</body>
+</html>

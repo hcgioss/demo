@@ -86,7 +86,9 @@
                         <h4 class="mb-0">@Model.FinalTotal.ToString("N0") đ</h4>
                     </div>
 
-                    <button class="btn btn-primary btn-block btn-lg" onclick="alert('Tính năng thanh toán đang phát triển!')">THANH TOÁN</button>
+                    <a href="@Url.Action("PrintInvoice", "Cart")" class="btn btn-primary">
+                        <i class="fas fa-print"></i> In hóa đơn
+                    </a>
                     <a href="/Cart/ClearCart" class="btn btn-outline-danger btn-block mt-2">Hủy đơn</a>
                 </div>
             </div>

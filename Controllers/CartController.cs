@@ -63,5 +63,17 @@ namespace demo.Controllers
             Session["Cart"] = new List<CartItem>();
             return RedirectToAction("Index");
         }
+
+        public ActionResult PrintInvoice()
+        {
+            var cartItems = Session["Cart"] as List<CartItem> ?? new List<CartItem>();
+
+            var model = new POSViewModel
+            {
+                CartItems = cartItems
+            };
+
+            return View("InvoicePrint", model);
+        }
     }
 }
