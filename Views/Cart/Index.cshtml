@@ -1,0 +1,96 @@
+﻿@model demo.Models.POSViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bán hàng & Build PC</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="container-fluid mt-4">
+    <h2 class="text-primary text-center font-weight-bold">HỆ THỐNG BÁN HÀNG & BUILD PC</h2>
+    <hr />
+
+    <div class="row px-3">
+        <div class="col-md-7">
+            <h4 class="text-secondary">Danh sách linh kiện</h4>
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Loại</th>
+                        <th>Tên linh kiện</th>
+                        <th>Giá bán</th>
+                        <th>Thao tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AvailableProducts)
+                    {
+                        <tr>
+                            <td><span class="badge badge-info">@item.Category</span></td>
+                            <td>@item.ProductName</td>
+                            <td class="text-danger font-weight-bold">@item.Price.ToString("N0") đ</td>
+                            <td>
+                                <a href="/Cart/AddToCart?productId=@item.ProductId" class="btn btn-sm btn-success">+ Thêm vào Combo</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">Hóa đơn hiện tại</h5>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Tên hàng</th>
+                                <th>SL</th>
+                                <th>Thành tiền</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.CartItems == null || !Model.CartItems.Any())
+                            {
+                                <tr><td colspan="3" class="text-center text-muted">Chưa có linh kiện nào</td></tr>
+                            }
+                            else
+                            {
+                                foreach (var cartItem in Model.CartItems)
+                                {
+                                    <tr>
+                                        <td>@cartItem.ProductName</td>
+                                        <td>@cartItem.Quantity</td>
+                                        <td>@cartItem.TotalPrice.ToString("N0") đ</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <span>Tạm tính:</span>
+                        <strong>@Model.SubTotal.ToString("N0") đ</strong>
+                    </div>
+                    <div class="d-flex justify-content-between text-success">
+                        <span>Chiết khấu (Combo >= 3 món):</span>
+                        <strong>- @Model.Discount.ToString("N0") đ</strong>
+                    </div>
+                    <hr />
+                    <div class="d-flex justify-content-between text-danger mb-3">
+                        <h4 class="mb-0">TỔNG CỘNG:</h4>
+                        <h4 class="mb-0">@Model.FinalTotal.ToString("N0") đ</h4>
+                    </div>
+
+                    <button class="btn btn-primary btn-block btn-lg" onclick="alert('Tính năng thanh toán đang phát triển!')">THANH TOÁN</button>
+                    <a href="/Cart/ClearCart" class="btn btn-outline-danger btn-block mt-2">Hủy đơn</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
