@@ -97,6 +97,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Controllers\WarrantyController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -104,10 +105,12 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CartModels.cs" />
     <Compile Include="Models\ProductItem.cs" />
+    <Compile Include="Models\RevenueViewModel.cs" />
     <Compile Include="Models\WarrantyViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\InventoryRepository.cs" />
     <Compile Include="Repositories\ProductRepository.cs" />
+    <Compile Include="Repositories\ReportRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Repositories\WarrantyRepository.cs" />
   </ItemGroup>
@@ -127,6 +130,7 @@
     <Content Include="Views\Inventory\Export.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\Cart\InvoicePrint.cshtml" />
+    <Content Include="Views\Report\Revenue.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

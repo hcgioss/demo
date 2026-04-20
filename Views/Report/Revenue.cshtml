@@ -1,0 +1,32 @@
+﻿@model List<demo.Models.RevenueViewModel>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">📊 THỐNG KÊ DOANH THU</h2>
+
+    <div class="alert alert-success text-center">
+        <h4>
+            Tổng doanh thu:
+            @String.Format("{0:N0}", ViewBag.TotalRevenue) VNĐ
+        </h4>
+    </div>
+
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Ngày</th>
+                <th>Doanh thu</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Date.ToString("dd/MM/yyyy")</td>
+                    <td>@String.Format("{0:N0}", item.Total)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
