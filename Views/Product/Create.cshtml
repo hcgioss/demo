@@ -1,28 +1,48 @@
 ﻿@model demo.Models.Product
-@{ ViewBag.Title = "Thêm linh kiện"; }
+@{
+    Layout = null; // Ngắt khung giao diện mặc định cũ
+}
 
-<div class="container mt-4">
-    <div class="card col-md-6 offset-md-3 p-4 shadow">
-        <h3 class="text-center">Thêm linh kiện mới</h3>
-        <hr />
-        @using (Html.BeginForm())
-        {
-            <div class="form-group">
-                <label>Tên linh kiện</label>
-                @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control", placeholder = "VD: CPU Intel Core i7" })
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Thêm linh kiện mới</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow border-primary">
+                    <div class="card-header bg-primary text-white text-center">
+                        <h4 class="mb-0 font-weight-bold">THÊM LINH KIỆN MỚI</h4>
+                    </div>
+                    <div class="card-body p-4">
+                        @using (Html.BeginForm())
+                        {
+                            <div class="form-group mb-3">
+                                <label class="font-weight-bold text-secondary">Tên linh kiện</label>
+                                @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control form-control-lg", placeholder = "VD: CPU Intel Core i7..." })
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="font-weight-bold text-secondary">Phân loại</label>
+                                @Html.DropDownListFor(m => m.Category, new SelectList(new[] { "CPU", "Mainboard", "RAM", "VGA", "SSD", "PSU", "Khác" }), "-- Chọn loại --", new { @class = "form-control form-control-lg" })
+                            </div>
+                            <div class="form-group mb-4">
+                                <label class="font-weight-bold text-secondary">Giá bán (VNĐ)</label>
+                                @Html.TextBoxFor(m => m.Price, new { @class = "form-control form-control-lg", type = "number", required = "required" })
+                            </div>
+
+                            <button type="submit" class="btn btn-success btn-block btn-lg shadow font-weight-bold">LƯU THÔNG TIN</button>
+                        }
+                    </div>
+                    <div class="card-footer bg-white text-center py-3">
+                        <a href="/Product/Index" class="text-secondary font-weight-bold text-decoration-none">&larr; Quay lại danh sách</a>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Phân loại</label>
-                @Html.DropDownListFor(m => m.Category, new SelectList(new[] { "CPU", "Mainboard", "RAM", "VGA", "SSD", "PSU" }), "-- Chọn loại --", new { @class = "form-control" })
-            </div>
-            <div class="form-group">
-                <label>Giá bán (VNĐ)</label>
-                @Html.TextBoxFor(m => m.Price, new { @class = "form-control", type = "number" })
-            </div>
-            <div class="mt-4">
-                <button type="submit" class="btn btn-success btn-block">Lưu thông tin</button>
-                <a href="/Product/Index" class="btn btn-light btn-block">Quay lại danh sách</a>
-            </div>
-        }
+        </div>
     </div>
-</div>
+</body>
+</html>
