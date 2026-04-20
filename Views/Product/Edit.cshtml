@@ -1,0 +1,42 @@
+﻿@model demo.Models.Product
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Cập nhật linh kiện</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="card col-md-6 offset-md-3 p-4 shadow border-warning">
+            <h3 class="text-center text-warning font-weight-bold">CẬP NHẬT LINH KIỆN</h3>
+            <hr />
+            @using (Html.BeginForm())
+            {
+                @Html.HiddenFor(m => m.ProductId)
+
+                <div class="form-group mb-3">
+                    <label class="font-weight-bold">Tên linh kiện</label>
+                    @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control" })
+                </div>
+                <div class="form-group mb-3">
+                    <label class="font-weight-bold">Phân loại</label>
+                    @Html.DropDownListFor(m => m.Category, new SelectList(new[] { "CPU", "Mainboard", "RAM", "VGA", "SSD", "PSU" }), "-- Chọn loại --", new { @class = "form-control" })
+                </div>
+                <div class="form-group mb-4">
+                    <label class="font-weight-bold">Giá bán (VNĐ)</label>
+                    @Html.TextBoxFor(m => m.Price, new { @class = "form-control", type = "number" })
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-warning btn-block btn-lg font-weight-bold text-white">Lưu thay đổi</button>
+                    <a href="/Product/Index" class="btn btn-outline-secondary btn-block mt-2">Hủy bỏ</a>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html> 

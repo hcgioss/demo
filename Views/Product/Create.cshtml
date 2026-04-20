@@ -1,0 +1,28 @@
+﻿@model demo.Models.Product
+@{ ViewBag.Title = "Thêm linh kiện"; }
+
+<div class="container mt-4">
+    <div class="card col-md-6 offset-md-3 p-4 shadow">
+        <h3 class="text-center">Thêm linh kiện mới</h3>
+        <hr />
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                <label>Tên linh kiện</label>
+                @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control", placeholder = "VD: CPU Intel Core i7" })
+            </div>
+            <div class="form-group">
+                <label>Phân loại</label>
+                @Html.DropDownListFor(m => m.Category, new SelectList(new[] { "CPU", "Mainboard", "RAM", "VGA", "SSD", "PSU" }), "-- Chọn loại --", new { @class = "form-control" })
+            </div>
+            <div class="form-group">
+                <label>Giá bán (VNĐ)</label>
+                @Html.TextBoxFor(m => m.Price, new { @class = "form-control", type = "number" })
+            </div>
+            <div class="mt-4">
+                <button type="submit" class="btn btn-success btn-block">Lưu thông tin</button>
+                <a href="/Product/Index" class="btn btn-light btn-block">Quay lại danh sách</a>
+            </div>
+        }
+    </div>
+</div>

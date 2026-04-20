@@ -32,7 +32,7 @@ namespace demo.Controllers
                     Session["UserSession"] = user;
 
                     // Đăng nhập thành công thì chuyển hướng về trang tra cứu bảo hành (hoặc trang chủ)
-                    return RedirectToAction("Index", "Warranty");
+                    return RedirectToAction("Index", "Home");
                 }
                 else
                 {

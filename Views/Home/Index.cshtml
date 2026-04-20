@@ -1,0 +1,67 @@
+﻿@{
+    Layout = null;
+    // Kéo thông tin người dùng từ phiên đăng nhập ra để hiển thị tên
+    var user = Session["UserSession"] as demo.Models.UserSession;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Hệ thống Quản lý An Phát PC</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-dark bg-dark justify-content-between shadow-sm">
+        <a class="navbar-brand font-weight-bold" href="#">🖥️ Hệ thống Quản trị An Phát PC</a>
+        <div class="form-inline">
+            <span class="text-white mr-4">Xin chào, <strong>@(user != null ? user.FullName : "Admin")</strong>!</span>
+            <a href="/Account/Logout" class="btn btn-sm btn-outline-danger">Đăng xuất</a>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2 class="text-center text-secondary mb-5 font-weight-bold">BẢNG ĐIỀU KHIỂN (DASHBOARD)</h2>
+
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100 border-primary">
+                    <div class="card-body text-center d-flex flex-column">
+                        <h4 class="card-title text-primary font-weight-bold">📦 QUẢN LÝ KHO</h4>
+                        <p class="card-text text-muted mb-4">Định nghĩa danh mục, nhập kho bằng máy quét mã vạch Serial.</p>
+                        <div class="mt-auto">
+                            <a href="/Product/Index" class="btn btn-outline-primary btn-block mb-2">1. Danh mục linh kiện</a>
+                            <a href="/Inventory/Index" class="btn btn-primary btn-block">2. Quét Serial nhập kho</a>
+                            <a href="/Inventory/Export" class="btn btn-danger btn-block mt-2">3. Quét Serial Xuất kho</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100 border-success">
+                    <div class="card-body text-center d-flex flex-column">
+                        <h4 class="card-title text-success font-weight-bold">🛒 BÁN HÀNG</h4>
+                        <p class="card-text text-muted mb-4">Tạo hóa đơn lẻ, lập cấu hình Build PC, tự động tính chiết khấu.</p>
+                        <div class="mt-auto">
+                            <a href="/Cart/Index" class="btn btn-success btn-block mt-4">Đi đến Điểm Bán Hàng (POS)</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm h-100 border-info">
+                    <div class="card-body text-center d-flex flex-column">
+                        <h4 class="card-title text-info font-weight-bold">🛡️ BẢO HÀNH</h4>
+                        <p class="card-text text-muted mb-4">Tra cứu nhanh trạng thái thời hạn bảo hành qua mã Serial.</p>
+                        <div class="mt-auto">
+                            <a href="/Warranty/Index" class="btn btn-info btn-block mt-4">Đi đến Tra cứu bảo hành</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
