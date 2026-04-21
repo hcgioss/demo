@@ -1,0 +1,90 @@
+﻿@model demo.Models.CreateWarrantyViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Lập Phiếu Bảo Hành - An Phát Computer</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .main-card {
+            max-width: 650px;
+            margin: 40px auto;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #007bff, #0056b3);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .form-control {
+            border-radius: 8px;
+            padding: 12px;
+        }
+
+        .btn-success {
+            padding: 12px 30px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-card card">
+        <div class="card-header">
+            <h2><i class="glyphicon glyphicon-edit"></i> Lập Phiếu Tiếp Nhận Bảo Hành</h2>
+        </div>
+        <div class="card-body p-5">
+
+            @if (TempData["Success"] != null)
+            {
+                <div class="alert alert-success">@TempData["Success"]</div>
+            }
+            @if (TempData["Error"] != null)
+            {
+                <div class="alert alert-danger">@TempData["Error"]</div>
+            }
+
+            @using (Html.BeginForm("Create", "Warranty2", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label class="font-weight-bold">Mã Serial Linh Kiện <span class="text-danger">*</span></label>
+                    @Html.TextBoxFor(m => m.SerialNumber, new { @class = "form-control", placeholder = "Ví dụ: CPU-13400F-001" })
+                    @Html.ValidationMessageFor(m => m.SerialNumber, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label class="font-weight-bold">Số Điện Thoại Khách Hàng <span class="text-danger">*</span></label>
+                    @Html.TextBoxFor(m => m.CustomerPhone, new { @class = "form-control", placeholder = "Nhập số điện thoại" })
+                    @Html.ValidationMessageFor(m => m.CustomerPhone, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    <label class="font-weight-bold">Mô tả lỗi / Triệu chứng <span class="text-danger">*</span></label>
+                    @Html.TextAreaFor(m => m.IssueDescription, new { @class = "form-control", rows = 5, placeholder = "Mô tả chi tiết lỗi khách hàng báo..." })
+                    @Html.ValidationMessageFor(m => m.IssueDescription, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-success btn-lg px-5">Lập Phiếu Bảo Hành</button>
+                    <a href="@Url.Action("Index", "Warranty")" class="btn btn-secondary btn-lg px-4">← Quay lại Tra cứu</a>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
